@@ -1,11 +1,11 @@
 define([ "jquery" ], function ($) {
-	function Pxy() {
+    function Pxy() {
 
-	}
+    }
 
-	$.fn.pxy = $.fn.pxy || function () {
+    $.fn.pxy = $.fn.pxy || function () {
 
-	};
+    };
 
-	return Pxy;
+    return Pxy;
 });
