@@ -1,2 +1,2 @@
 # pxy
-Pronounced "pixy", is the eptimome of awsum.
+Pronounced "pixy", Pxy is the epitome of awesome when dealing with Promises in a RIA.
