@@ -1,0 +1,20 @@
+{
+  "name": "pxy",
+  "main": "pxy.js",
+  "version": "0.0.0",
+  "homepage": "https://github.com/atesgoral/pxy",
+  "authors": [
+    "Ates Goral <ates@magnetiq.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "intern": "~1.4.0"
+  }
+}
