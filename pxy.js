@@ -9,13 +9,16 @@
         factory((root.Pxy = {}));
     }
 }(this, function (exports) {
-    function Pxy(Q) {
+    function Pxy(Q, canceler) {
         var originalPromises = [],
             isValid = true;
 
-        this.invalidate = function (cancel) {
+        this.invalidate = function () {
             isValid = false;
-            originalPromises.forEach(cancel);
+
+            if (canceler) {
+                originalPromises.forEach(canceler);
+            }
         };
 
         this.proxy = function (promise) {
