@@ -1,0 +1,24 @@
+{
+  "name": "pxy",
+  "version": "0.0.1",
+  "description": "Promise proxy",
+  "main": "pxy.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/atesgoral/pxy.git"
+  },
+  "keywords": [
+    "promise"
+  ],
+  "author": "Ates Goral <ates@magnetiq.com> (http://magnetiq.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/atesgoral/pxy/issues"
+  }
+}
