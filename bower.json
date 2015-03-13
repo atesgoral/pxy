@@ -8,15 +8,8 @@
   ],
   "license": "MIT",
   "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
+    "**/.*"
   ],
-  "dependencies": {
-    "intern": "~1.4.0"
-  },
   "description": "Promise proxy",
   "moduleType": [
     "amd",
