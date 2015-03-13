@@ -1,12 +1,12 @@
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
         define([ 'exports' ], function (exports) {
-            factory((root.pxy = exports));
+            factory((root.Pxy = exports));
         });
     } else if (typeof exports === 'object') {
         factory(exports);
     } else {
-        factory((root.pxy = {}));
+        factory((root.Pxy = {}));
     }
 }(this, function (exports) {
     function Pxy(Q) {
