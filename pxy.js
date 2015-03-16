@@ -1,14 +1,14 @@
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
-        define([ 'exports' ], function (exports) {
-            factory((root.Pxy = exports));
+        define([ 'module' ], function (module) {
+            module.exports = factory();
         });
-    } else if (typeof exports === 'object') {
-        factory(exports);
+    } else if (typeof module === 'object') {
+        module.exports = factory();
     } else {
-        factory((root.Pxy = {}));
+        root.Pxy = factory();
     }
-}(this, function (exports) {
+}(this, function () {
     function Pxy(Q, canceler) {
         var originalPromises = [],
             isValid = true;
