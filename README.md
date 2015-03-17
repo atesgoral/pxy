@@ -28,7 +28,9 @@ npm install pxy
 
 You can grab the Pxy constructor via an AMD or CommonJS `require()`. In the absence of a module loader environment, it's made available globally as `Pxy`.
 
-Create a new instance for every context/scope where you need to control the notification flow and lifetime of promises. Pass in a [Q](https://github.com/kriskowal/q)-compatible promise factory as the first argument. Angular's [$q](https://docs.angularjs.org/api/ng/service/$q) works. There is currently no support for jQuery's [Deferred](http://api.jquery.com/category/deferred-object/):
+Create a new instance for every scope where you need to control the notification flow and lifetime of promises. Here, a "scope" means any scope/state/context that has a temporary lifetime within the flow of your application. This can be a DOM fragment for a rendered subview, an Angular scope for a route that's being visited, or some proprietary construct you've come up with.
+
+Pass in a [Q](https://github.com/kriskowal/q)-compatible promise factory as the first argument. Angular's [$q](https://docs.angularjs.org/api/ng/service/$q) works. There is currently no support for jQuery's [Deferred](http://api.jquery.com/category/deferred-object/):
 
 ```js
 var pxy = new Pxy(Q);
@@ -53,3 +55,11 @@ var fetch = pxy.proxy(http.get(...)),
 fetch.then(...);
 timer.then(...);
 ```
+
+When the current scope is about to be left or destroyed, invalidate the Pxy instance:
+
+```js
+pxy.invalidate();
+```
+
+This will stop the propagation of state changes on original promises to their proxies, and hence the state change handlers in your code. This will allow your code not to care about the outcome of asynchronous operations after the scope in which they were initiated has been abandoned.
