@@ -1,4 +1,4 @@
-# pxy
+# Pxy
 
 Pxy (pronounced "pixie") proxies promises. It wraps a new promise (the proxy promise) around an existing promise (the original promise) and relays the fulfillment, rejection or notification of the original promise to the proxy promise.
 
