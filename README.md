@@ -69,3 +69,39 @@ A common use case is promises for pending HTTP fetches on single page web applic
 Moreover, Pxy can automatically cancel pending HTTP fetches for you, if a cancellation recipe is provided to it during instantiation (see below). This has the added benefit of reducing bandwidth usage and load on the backend server.
 
 Another common use case is timeout/interval timers that need to be canceled when the relevant view is abandoned. You would typically need to keep track of scope/DOM destruction or route changes yourself and explicitly cancel any pending timers. Pxy handles this automatically for you; first by preventing timer handlers from being fired and secondly by cancelling the timers if Pxy is told how to cancel them.
+
+To give Pxy a promise cancellation recipe, pass a promise canceller function as the second argument to the constructor:
+
+```js
+var pxy = new Pxy(Q, function (promise) {
+    // Detect type of promise, and cancel if it's cancellable
+});
+```
+
+When the Pxy instance is invalidated, the canceler will be called with all the pending promises that the Pxy instance is tracking. Note that any fulfilled or rejected promise is immediately removed from the pxy instance and therefore won't be passed to the canceler.
+
+## Angular-specific
+
+You can directly use the `$q` service in the constructor. You can also use the following recipe for automatically cancelling Angular timeout and intervals:
+
+```js
+var pxy = new Pxy($q, function (promise) {
+    if (promise.$$timeoutId) {
+        $timeout.cancel(promise);
+    } else if (promise.$$intervalId) {
+        $interval.cancel(promise);
+    }
+});
+```
+
+You can create a new Pxy instance for each view scope, proxy all promises that are initiated within that scope, and then invalidate the Pxy instance when the scope is destroyed:
+
+```js
+var pxy = new Pxy($q, promiseCanceler);
+
+var fetch = pxy.proxy($http.get(...));
+
+$scope.$on('$destroy', pxy.invalidate);
+```
+
+Also see [angular-pxy](https://github.com/myplanetdigital/angular-pxy) that automatically creates and invalidates Pxy instances for Angular scopes.
