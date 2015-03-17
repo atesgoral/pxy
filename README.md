@@ -1,14 +1,14 @@
 # pxy
 
-Pxy (pronounced "pixie") proxies promises. It wraps a new promise (the proxy promise) around an existing promise (the original promise) and relays the resolution, rejection or notification of the original promise to the proxy promise.
+Pxy (pronounced "pixie") proxies promises. It wraps a new promise (the proxy promise) around an existing promise (the original promise) and relays the fulfillment, rejection or notification of the original promise to the proxy promise.
 
 ![Valid](/../gh-pages/assets/pxy_valid.png?raw=true "Valid")
 
-The relaying of updates to all promises that are proxied by a Pxy instance are prevented when the Pxy instance is invalidated. 
+The relaying of state transitions of all promises that are proxied by a Pxy instance are prevented when the Pxy instance is invalidated. 
 
 ![Invalidated](/../gh-pages/assets/pxy_invalidated.png?raw=true "Invalidated")
 
-Moreover, the Pxy instance can be told to recognize promises that are originating from different asynchronous operations (e.g. an HTTP fetch, a timeout, an audio playback, etc.) and cancel those pending operations when the instance is invalidated.
+Moreover, the Pxy instance can be told how to recognize different types of promises that are originating from different asynchronous operations (e.g. an HTTP fetch, a timeout, an audio playback, etc.) and cancel those pending operations when the instance is invalidated.
 
 ## Installation
 
@@ -28,7 +28,7 @@ npm install pxy
 
 You can grab the Pxy constructor via an AMD or CommonJS `require()`. In the absence of a module loader environment, it's made available globally as `Pxy`.
 
-Create a new instance for every scope where you need to control the notification flow and lifetime of promises. Here, a "scope" means any scope/state/context that has a temporary lifetime within the flow of your application. This can be a DOM fragment for a rendered subview, an Angular scope for a route that's being visited, or some proprietary construct you've come up with.
+Create a new instance for every scope where you need control over the state transition notification flow and lifetime of promises. Here, a "scope" means any scope/state/context that has a temporary lifetime within the flow of your application. This can be a DOM fragment for a rendered subview, an Angular scope for a route that's being visited, or some proprietary construct you've come up with.
 
 Pass in a [Q](https://github.com/kriskowal/q)-compatible promise factory as the first argument. Angular's [$q](https://docs.angularjs.org/api/ng/service/$q) works. There is currently no support for jQuery's [Deferred](http://api.jquery.com/category/deferred-object/):
 
@@ -62,7 +62,7 @@ When the current scope is about to be left or destroyed, invalidate the Pxy inst
 pxy.invalidate();
 ```
 
-This will stop the propagation of state changes on original promises to their proxies, and hence the state change handlers in your code. This will allow your code not to care about the outcome of asynchronous operations after the scope in which they were initiated has been abandoned.
+This will stop the propagation of state transitions of original promises to their proxies, and hence the state transition handlers in your code; allowing your code not to care about the outcome of asynchronous operations after the scope in which they were initiated has been abandoned.
 
 A common use case is promises for pending HTTP fetches on single page web applications. There is usually no observable harm when an HTTP fetch completes after the relevant view has been long abandoned. Typically, the success/failure handlers for fetch promises update view models that are bound to the DOM or directly update the DOM. But since the view has been abandoned, nothing that's visible happens when detached DOM fragments or orphan view models are updated. Though, in some cases there can be JavaScript runtime errors being silently logged in the console. This is entirely prevented with proxies that prevent the success/failure handlers from being fired.
 
@@ -74,7 +74,7 @@ To give Pxy a promise cancellation recipe, pass a promise canceller function as 
 
 ```js
 var pxy = new Pxy(Q, function (promise) {
-    // Detect type of promise, and cancel if it's cancellable
+    // Detect type of promise and cancel it if it's cancellable
 });
 ```
 
