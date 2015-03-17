@@ -63,3 +63,9 @@ pxy.invalidate();
 ```
 
 This will stop the propagation of state changes on original promises to their proxies, and hence the state change handlers in your code. This will allow your code not to care about the outcome of asynchronous operations after the scope in which they were initiated has been abandoned.
+
+A common use case is promises for pending HTTP fetches on single page web applications. There is usually no observable harm when an HTTP fetch completes after the relevant view has been long abandoned. Typically, the success/failure handlers for fetch promises update view models that are bound to the DOM or directly update the DOM. But since the view has been abandoned, nothing that's visible happens when detached DOM fragments or orphan view models are updated. Though, in some cases there can be JavaScript runtime errors being silently logged in the console. This is entirely prevented with proxies that prevent the success/failure handlers from being fired.
+
+Moreover, Pxy can automatically cancel pending HTTP fetches for you, if a cancellation recipe is provided to it during instantiation (see below). This has the added benefit of reducing bandwidth usage and load on the backend server.
+
+Another common use case is timeout/interval timers that need to be canceled when the relevant view is abandoned. You would typically need to keep track of scope/DOM destruction or route changes yourself and explicitly cancel any pending timers. Pxy handles this automatically for you; first by preventing timer handlers from being fired and secondly by cancelling the timers if Pxy is told how to cancel them.
