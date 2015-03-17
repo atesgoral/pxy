@@ -28,9 +28,28 @@ npm install pxy
 
 You can grab the Pxy constructor via an AMD or CommonJS `require()`. In the absence of a module loader environment, it's made available globally as `Pxy`.
 
-Create a new instance for every context/scope where you need to control the notification flow and lifetimes of promises. Pass in a [Q](https://github.com/kriskowal/q)-compatible promise factory as the first argument. Angular's [$q](https://docs.angularjs.org/api/ng/service/$q) works. There is currently no support for jQuery's [Deferred](http://api.jquery.com/category/deferred-object/):
+Create a new instance for every context/scope where you need to control the notification flow and lifetime of promises. Pass in a [Q](https://github.com/kriskowal/q)-compatible promise factory as the first argument. Angular's [$q](https://docs.angularjs.org/api/ng/service/$q) works. There is currently no support for jQuery's [Deferred](http://api.jquery.com/category/deferred-object/):
 
 ```js
 var pxy = new Pxy(Q);
 ```
 
+Find instances where you have a promise returned as a result of an asynchronous operation:
+
+```js
+var fetch = http.get(...),
+    timer = timeout(...);
+    
+fetch.then(...);
+timer.then(...);
+```
+
+Wrap these promises inside Pxy proxies. Since the proxies are promises themselves, the rest of your code doesn't have to change:
+
+```js
+var fetch = pxy.proxy(http.get(...)),
+    timer = pxy.proxy(timeout(...));
+
+fetch.then(...);
+timer.then(...);
+```
