@@ -104,4 +104,4 @@ var fetch = pxy.proxy($http.get(...));
 $scope.$on('$destroy', pxy.invalidate);
 ```
 
-Also see [angular-pxy](https://github.com/myplanetdigital/angular-pxy) that automatically creates and invalidates Pxy instances for Angular scopes.
+Also see [angular-pxy](https://myplanet.github.io/angular-pxy) that automatically creates and invalidates Pxy instances for Angular scopes.
